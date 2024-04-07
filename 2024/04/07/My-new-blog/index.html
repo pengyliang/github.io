@@ -1,288 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>博弈树搜索 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="博弈树搜索背景：博弈问题。 零和博弈：一方的获利以对方的损失为代价。双方的利益之和为0. 完美信息：任何状态都是可观察的，没有隐藏的信息 零和博弈的定义：![[搜索技术.png]] MiniMax算法假设零和博弈双方总能做出最优的行动，即让对方收益最小的行动。规定先手方为Max方，后手方为Min方，先手要让博弈收益最大，后手要针对先手，让博弈收益最小。 ![[搜索技术-1.png]]  根节点：初">
-<meta property="og:type" content="article">
-<meta property="og:title" content="博弈树搜索">
-<meta property="og:url" content="http://example.com/2024/04/07/My-new-blog/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="博弈树搜索背景：博弈问题。 零和博弈：一方的获利以对方的损失为代价。双方的利益之和为0. 完美信息：任何状态都是可观察的，没有隐藏的信息 零和博弈的定义：![[搜索技术.png]] MiniMax算法假设零和博弈双方总能做出最优的行动，即让对方收益最小的行动。规定先手方为Max方，后手方为Min方，先手要让博弈收益最大，后手要针对先手，让博弈收益最小。 ![[搜索技术-1.png]]  根节点：初">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-04-07T08:56:16.000Z">
-<meta property="article:modified_time" content="2024-04-07T09:09:22.792Z">
-<meta property="article:author" content="John Doe">
-<meta property="article:tag" content="AI">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-My-new-blog" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/04/07/My-new-blog/" class="article-date">
-  <time class="dt-published" datetime="2024-04-07T08:56:16.000Z" itemprop="datePublished">2024-04-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      博弈树搜索
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="博弈树搜索"><a href="#博弈树搜索" class="headerlink" title="博弈树搜索"></a>博弈树搜索</h1><p>背景：博弈问题。</p>
-<p>零和博弈：一方的获利以对方的损失为代价。双方的利益之和为0.</p>
-<p>完美信息：任何状态都是可观察的，没有隐藏的信息</p>
-<p>零和博弈的定义：<br>![[搜索技术.png]]</p>
-<h2 id="MiniMax算法"><a href="#MiniMax算法" class="headerlink" title="MiniMax算法"></a>MiniMax算法</h2><p>假设零和博弈双方总能做出最优的行动，即让对方收益最小的行动。规定先手方为Max方，后手方为Min方，先手要让博弈收益最大，后手要针对先手，让博弈收益最小。</p>
-<p>![[搜索技术-1.png]]</p>
-<ul>
-<li>根节点：初始状态</li>
-<li>叶子节点：终止状态</li>
-<li>效益值U(n)：节点的效益值。<ul>
-<li>对于Min节点，$U(n)&#x3D;min{U(c):c是子节点}$</li>
-<li>对于Max节点，$U(n)&#x3D;max{U(c):c是子节点}$</li>
-<li>从叶子节点反向传播至根节点</li>
-</ul>
-</li>
-</ul>
-<h3 id="MiniMax算法实现"><a href="#MiniMax算法实现" class="headerlink" title="MiniMax算法实现"></a>MiniMax算法实现</h3><p>由于效益值<strong>反向传播</strong>的特性，使用<strong>深度优先</strong>算法能更快到达叶子节点。</p>
-<h2 id="Alpha-Beta-剪枝"><a href="#Alpha-Beta-剪枝" class="headerlink" title="Alpha Beta 剪枝"></a>Alpha Beta 剪枝</h2><p>当Min节点的$\beta$值 &lt;&#x3D; Max节点的$\alpha$值，则剪枝。</p>
-<p>这里剪枝的情况是对具有<strong>父子&#x2F;祖先</strong>关系中的儿子&#x2F;后代节点剪枝。</p>
-<h2 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h2><p>$\alpha\beta$剪枝仍然复杂度太高，在真实游戏中无法构建完整的博弈树，甚至连叶子节点都不一定能遍历的到。因此有必要使用<strong>评价函数</strong>提高搜索效率。</p>
-<h3 id="评价函数的设计"><a href="#评价函数的设计" class="headerlink" title="评价函数的设计"></a>评价函数的设计</h3><ol>
-<li>加权平均</li>
-</ol>
-<p>计算各个<strong>特征</strong>的加权值。</p>
-<p>这些特征既可以是人为经验确定，也可以是<strong>机器学习</strong>得出。</p>
-<blockquote>
-<p>国际象棋中，不同棋子子力不同，可设计加权函数为<br>$Eval(s)&#x3D;w_{1}f_{1}(state)+…&#x3D;\sum_{i&#x3D;1}^{n}w_{i}f_{i}(state)$</p>
-</blockquote>
-<ol start="2">
-<li>非线性加权</li>
-</ol>
-<h1 id="高级搜索技术简介"><a href="#高级搜索技术简介" class="headerlink" title="高级搜索技术简介"></a>高级搜索技术简介</h1><h2 id="爬山法"><a href="#爬山法" class="headerlink" title="爬山法"></a>爬山法</h2><p>贪婪局部搜索。一直向效益值增加的方向移动，达到局部最优。</p>
-<p>优点：</p>
-<ul>
-<li>内存占用少(无需构建搜索树)</li>
-<li>快速找到合理解。(在极大解空间中很有效)</li>
-</ul>
-<blockquote>
-<p>八皇后问题。使用爬山法搜索需要确定：</p>
-<ol>
-<li>后继函数</li>
-<li>耗散函数</li>
-<li>循环判断</li>
-</ol>
-<p>八皇后某一个状态及其后续状态的耗散值分布如下，下一步应该选择耗散值为12的状态。<br>![[搜索技术-3.png]]</p>
-</blockquote>
-<h3 id="图解"><a href="#图解" class="headerlink" title="图解"></a>图解</h3><p>![[搜索技术-2.png]]</p>
-<p>爬山法过程中几个重要地形：</p>
-<ul>
-<li>山顶：局部最优解</li>
-<li>高原：连续局部最优解 (难处理)</li>
-<li>山肩：局部平坦区，但某一侧可以继续爬升。</li>
-</ul>
-<p>好的爬山法要处理好山肩和高原，避免死循环同时能继续找到最优解。</p>
-<h3 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h3><p>随机生成的八皇后问题初始状态，朴素的爬山法只有14%的求解率。但算法速度很快，找到最优解的平均步数为4步，被卡主为3步。总状态空间为$8^8&#x3D;1.6\times 10^7$</p>
-<p>如果允许侧向移动100次，则解决率提高为94%。代价为提高搜索步数，对于上述算法，每个成功实例的平均步数大 约为21步，每个失败实例的平均步数大约为64步。</p>
-<h2 id="模拟退火-Simulated-Annealing-SA"><a href="#模拟退火-Simulated-Annealing-SA" class="headerlink" title="模拟退火(Simulated Annealing , SA)"></a>模拟退火(Simulated Annealing , SA)</h2><p>模拟物理退火过程，和爬山法相比，核心在于<strong>接受劣解</strong>。接受劣解的概率受温度和优劣程度有关。<strong>随着温度升高，接受劣解的可能性逐渐降低</strong>。劣解越差，接受概率越低。</p>
-<h2 id="遗传算法"><a href="#遗传算法" class="headerlink" title="遗传算法"></a>遗传算法</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/07/My-new-blog/" data-id="clupbqy2i00038gakh07i7qf9" data-title="博弈树搜索" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2024/02/27/first%20blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">My First Blog</div>
-    </a>
-  
-</nav>
-
-  
-</article>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/article/" rel="tag">article</a></li></ul>
+{% block page_class %}page-post-detail{% endblock %}
+
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/article/" style="font-size: 10px;">article</a>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2024/04/07/My-new-blog/">博弈树搜索</a>
-          </li>
-        
-          <li>
-            <a href="/2024/02/27/first%20blog/">My First Blog</a>
-          </li>
-        
-          <li>
-            <a href="/2024/02/27/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2024 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
